@@ -1,5 +1,8 @@
 const scroll = new SmoothScroll('a[href*="#"]');
 
+const urlMatches =
+  "http://api.football-data.org/v2/competitions/2014/matches?status=SCHEDULED";
+
 const urlStandings =
   "http://api.football-data.org/v2/competitions/2014/standings";
 
@@ -7,6 +10,29 @@ const urlResults =
   "http://api.football-data.org/v2/competitions/2014/matches?status=FINISHED";
 
 const urlScorers = "http://api.football-data.org/v2/competitions/2014/scorers";
+
+async function getMatches() {
+  const response = await fetch(urlMatches, {
+    method: "GET",
+    headers: {
+      "X-Auth-Token": "ef72570ff371408f9668e414353b7b2e",
+    },
+  });
+  const data = await response.json();
+  console.log(data);
+
+  document.getElementById(
+    "schedule"
+  ).innerHTML = `<h1 class='title'>Next in LA LIGA</h1><table class='table matches'><tr>
+  ${data.matches
+    .slice(0, 10)
+    .map(
+      (match) => `<td>${match.utcDate.slice(0, 10)}</td><td>
+    ${match.homeTeam.name}</td><td>${match.awayTeam.name}</td></tr>`
+    )
+    .join("")}</table>
+  `;
+}
 
 async function getStandings() {
   const response = await fetch(urlStandings, {
@@ -25,8 +51,8 @@ async function getStandings() {
   <tr>
   ${data.standings[0].table
     .map(
-      (team) => ` 
-    
+      (team) => `
+
     <td>${team.position}</td><td><img src=${team.team.crestUrl} height='20'></td><td>${team.team.name}</td><td class='points'>${team.points}</td><td>${team.won}</td><td>${team.draw}</td><td>${team.lost}</td><td>${team.goalsFor}</td><td>${team.goalsAgainst}</td><td>${team.goalDifference}</td>
     </tr>`
     )
@@ -40,8 +66,8 @@ async function getStandings() {
   <tr>
   ${data.standings[1].table
     .map(
-      (team) => ` 
-    
+      (team) => `
+
     <td>${team.position}</td><td><img src=${team.team.crestUrl} height='20'></td><td>${team.team.name}</td><td class='points'>${team.points}</td><td>${team.won}</td><td>${team.draw}</td><td>${team.lost}</td><td>${team.goalsFor}</td><td>${team.goalsAgainst}</td><td>${team.goalDifference}</td>
     </tr>`
     )
@@ -55,8 +81,8 @@ async function getStandings() {
   <tr>
   ${data.standings[2].table
     .map(
-      (team) => ` 
-    
+      (team) => `
+
     <td>${team.position}</td><td><img src=${team.team.crestUrl} height='20'></td><td>${team.team.name}</td><td class='points'>${team.points}</td><td>${team.won}</td><td>${team.draw}</td><td>${team.lost}</td><td>${team.goalsFor}</td><td>${team.goalsAgainst}</td><td>${team.goalDifference}</td>
     </tr>`
     )
@@ -71,13 +97,13 @@ async function getResults() {
       "X-Auth-Token": "ef72570ff371408f9668e414353b7b2e",
     },
   });
-  const data1 = await response.json();
-  console.log(data1);
+  const data = await response.json();
+  console.log(data);
 
   document.getElementById(
     "results"
   ).innerHTML = `<h1 class='title'>RESULTS</h1><table class='table matches'><tr>
-  ${data1.matches
+  ${data.matches
     .map(
       (match) =>
         `<td>Round ${match.matchday}</td><td class='${
@@ -101,13 +127,13 @@ async function getScorers() {
       "X-Auth-Token": "ef72570ff371408f9668e414353b7b2e",
     },
   });
-  const data2 = await response.json();
-  console.log(data2);
+  const data = await response.json();
+  console.log(data);
 
   document.getElementById(
     "goalscorers"
-  ).innerHTML = `<h1 class='title'>TOP 10 GOALSCORERS</h1><table class='table scorers'><tr class='tableHeading'><td>Name<td><td>Team<td><td>Country<td><td>Goals<td></tr>
-  ${data2.scorers
+  ).innerHTML = `<h1 class='title'>TOP 10 GOALSCORERS</h1><table class='table scorers'><tr class='tableHeading'><td>Name<td><td>Team<td><td>Country<td><td>Goals<td></tr><tr>
+  ${data.scorers
     .map(
       (player) => `<td>
     ${player.player.name}<td><td>${player.team.name}<td><td>${player.player.nationality}<td><td>${player.numberOfGoals}<td></tr>`
@@ -116,6 +142,7 @@ async function getScorers() {
   `;
 }
 
+getMatches();
 getStandings();
 getResults();
 getScorers();
