@@ -124,6 +124,10 @@ tr:hover {
   font-weight: bold;
 }
 
+.results {
+  background: lightgray;
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 10px;
