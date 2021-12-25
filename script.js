@@ -4,7 +4,7 @@ const urlMatches =
   "http://api.football-data.org/v2/competitions/2014/matches?status=SCHEDULED";
 
 const urlStandings =
-  "http://api.football-data.org/v2/competitions/2014/standings";
+  "http://api.football-data.org/v3/competitions/2014/standings";
 
 const urlResults =
   "http://api.football-data.org/v2/competitions/2014/matches?status=FINISHED";
